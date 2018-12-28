@@ -18,11 +18,13 @@ namespace Training_QA_Automation.Framework.Tests
         [TestInitialize]
         public void SetUp()
         {
+            var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME", EnvironmentVariableTarget.User);
+            var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY", EnvironmentVariableTarget.User);
             ChromeOptions options = new ChromeOptions();
             options.AddAdditionalCapability(CapabilityType.Version, "latest", true);
             options.AddAdditionalCapability(CapabilityType.Platform, "Windows 10", true);
-            options.AddAdditionalCapability("username", "rociofc0312", true);
-            options.AddAdditionalCapability("accessKey", "0a956e06-8ff0-4924-bd14-6470679c6c13", true);
+            options.AddAdditionalCapability("username", sauceUserName, true);
+            options.AddAdditionalCapability("accessKey", sauceAccessKey, true);
             options.AddAdditionalCapability("name", TestContext.TestName, true);
 
             this.driver = new RemoteWebDriver(new Uri("http://ondemand.saucelabs.com:80/wd/hub"), options.ToCapabilities(), TimeSpan.FromSeconds(600));
