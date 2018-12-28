@@ -1,10 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Training_QA_Automation.Framework.PageObjects
 {
@@ -18,18 +14,28 @@ namespace Training_QA_Automation.Framework.PageObjects
             PageFactory.InitElements(driver, this);
         }
 
-        [FindsBy(How = How.Name, Using = "Email")]
-        private IWebElement email;
+        [FindsBy(How = How.Id, Using = "Email")]
+        private IWebElement Email;
 
         [FindsBy(How = How.Id, Using = "sign-in-desk")]
         private IWebElement SignIn;
 
-        [FindsBy(How = How.CssSelector, Using = "#header > div > div > div.col-xs-8.text-right > div > a")]
+        [FindsBy(How = How.ClassName, Using = "btn-default")]
         private IWebElement CreateAccount;
         
         public void GotToPage(String queryParams = "")
         {
             driver.Navigate().GoToUrl("https://aws-test.taxact.com" + queryParams);
+        }
+
+        public void ClickSignIn()
+        {
+            Actions.ClickOn(driver, SignIn);
+        }
+
+        public void ClickCreateAccount()
+        {
+            Actions.ClickOn(driver, CreateAccount);
         }
     }
 }
