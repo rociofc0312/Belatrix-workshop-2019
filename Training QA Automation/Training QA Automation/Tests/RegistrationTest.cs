@@ -45,6 +45,7 @@ namespace Training_QA_Automation.Framework.Tests
             registrationPage.GotToPage();
             registrationPage.ClickSignIn();
             registrationPage.ClickCreateAccount();
+            registrationPage.TypeEmail();
             Assert.AreEqual("Next", driver.FindElement(By.ClassName("btn-primary")).Text);
         }
     }
