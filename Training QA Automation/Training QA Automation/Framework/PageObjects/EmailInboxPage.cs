@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Training_QA_Automation.Framework.PageObjects
@@ -16,36 +17,44 @@ namespace Training_QA_Automation.Framework.PageObjects
             PageFactory.InitElements(driver, this);
         }
 
-        [FindsBy(How = How.Id, Using = "inboxfield")]
-        private IWebElement Inbox;
+        [FindsBy(How = How.ClassName, Using = "icon-plus")]
+        private IWebElement AddInbox;
 
-        [FindsBy(How = How.ClassName, Using = "btn-dark")]
-        private IWebElement Go;
+        [FindsBy(How = How.ClassName, Using = "user_name")]
+        private IWebElement Username;
 
-        [FindsBy(How = How.TagName, Using = "table")]
-        private IWebElement table;
+        [FindsBy(How = How.ClassName, Using = "success")]
+        private IWebElement Accept;
 
-        public void GotToPage(String queryParams = "")
+        [FindsBy(How = How.ClassName, Using = "subject")]
+        private IWebElement list1;
+
+        public void OpenTabAndGoToPage(String queryParams = "")
         {
-            driver.Navigate().GoToUrl("https://www.mailinator.com/" + queryParams);
+            Actions.OpenNewTab(driver);
+            Actions.SwitchTab(driver, 1);
+            driver.Navigate().GoToUrl("https://getnada.com/" + queryParams);
         }
 
-        public void TypeEmail(string email)
+        public void AddInboxTypeEmailAndAccept(string username)
         {
-            Inbox.Type(driver, email);
-        }
-
-        public void ClickGo()
-        {
-            Go.ClickOn(driver);
+            AddInbox.ClickOn(driver);
+            Username.Type(driver, username);
+            Accept.ClickOn(driver);
         }
 
         public string GetRowCode()
         {
             string verificationCode;
-            IWebElement row = table.FindElement(By.XPath("//tr/td[contains(text(), 'Your Account Verification Code Is 542186')]"));
+            IWebElement row = Actions.WaitUntilElementExists(driver, By.ClassName("subject"));
             verificationCode = Regex.Match(row.Text, @"\d+").Value;
+            Actions.SwitchTab(driver, 0);
             return verificationCode;
+        }
+
+        public void GoBack()
+        {
+            driver.SwitchTo().Window(driver.WindowHandles.First());
         }
 
     }
